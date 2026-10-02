@@ -30,59 +30,109 @@ verification, and adapts to choices you make along the way.
 <summary><b>Setup prompt (click to copy)</b></summary>
 
 ```text
-I want to stand up the Couchbase notification-platform PoC in this repo on my
-own AWS account. Act as my guide: ask me one question at a time, run what you
-can yourself, and tell me exactly what to run when it needs my hands.
+I want to stand up the Couchbase notification-platform PoC in this repo. Act as
+my guide: ask me one question at a time, run what you can yourself, and tell me
+exactly what to run when it needs my hands.
 
 Start by reading README.md and docs/design-spec.md so you know the architecture,
-then check my environment: aws CLI, terraform, docker, pnpm, Go, and whether
-infra/demo.env exists.
+then check my environment: aws CLI, docker, pnpm, Go, gh, and whether
+infra/demo.env already exists.
 
-Walk me through, in order:
+Then work through the following. At each component, FIRST ask whether I already
+have it running. If I do, take its address and verify you can reach it before
+moving on. If I do not, help me deploy it.
 
-1. Scope. Ask whether I want the full 500M-document benchmark or a small
-   functional demo (a few million). The answer changes the cluster size and the
-   seeding time, so get it before anything is provisioned.
+1. Scale. Ask which profile I want, and size everything else from the answer:
 
-2. Configuration. Copy infra/demo.env.example to infra/demo.env and fill it in
-   with me. I must supply the path to my own EC2 SSH key. Ask whether I have a
-   DuckDNS account: if I do, take the token and use stable DNS names; if not,
-   proceed with raw IPs and warn me that every instance stop/start will hand out
-   new public addresses that I will have to re-enter.
+     single - 1 node, all services, ~8 GiB RAM. Replicas are impossible on one
+              node, so the bucket is created with 0. Good for a laptop or a
+              single VM. Seed a few hundred thousand documents.
+     small  - 3 nodes, all services on each, ~16 GiB each. Every feature works
+              including replicas and failover. Seed a few million.
+     full   - the benchmarked 7-node layout: 3 data, 2 index+query, 2 search.
+              Only this one reproduces the published numbers. Seed 500M, which
+              takes about 105 minutes and needs roughly 380 GB of disk.
 
-   Ask whether I want my own bucket and tenant name rather than the ncgr
-   default. If I do, set CB_BUCKET, CB_SCOPE and TENANT_ID now and tell me they
-   cannot change after seeding - tenant_id is part of every document key.
+   Pass it to the setup script as PROFILE=single|small|full - it picks the
+   memory quotas and replica count. Warn me that the full profile costs real
+   money and takes hours; do not let me pick it by accident.
 
-3. Cluster. Help me provision Couchbase Server 8.0 Enterprise sized per the
-   benchmark table in README.md, then run infra/setup-cluster.sh to create the
-   bucket, scope, collections and indexes. Verify every index reaches "online"
-   before continuing - a deferred build that silently never ran is the most
-   common way this goes wrong.
+2. Couchbase cluster. Ask if I have one. If I do, check its version is 8.0+ and
+   that these services are present somewhere in the cluster, because the PoC
+   uses all five:
 
-4. Application. Bring up the pipeline, mock channels and dashboard with
-   infra/docker-compose.yml on an app server in the same VPC. Confirm
-   GET /health reports a loaded catalog (templates and event definitions
-   non-zero) before declaring success.
+     data (kv)  documents, and every KV read and subdocument mutation
+     index      the GSI indexes that serve the dashboard
+     query      N1QL, which the pipeline and the benchmark both use
+     search     FTS, needed only for full-text on the message body
+     eventing   the device-registry function; needed only for mobile sync
 
-5. Data. Run apps/seeder-go at the scale I chose. Give me a time estimate first
-   and check I want to proceed. Watch for failures rather than assuming success.
+   If I have no cluster, help me create one: EC2 instances (r7i class for full,
+   anything with enough RAM for small/single), install Couchbase Server 8.0
+   Enterprise, initialise the first node, and join the rest. For the full
+   profile, place the services as in the README table. For small and single, put
+   every service on every node. Tell me which ports must be open between the app
+   server and the cluster (8091-8097, 9100-9105, 11210) and that I should keep
+   them inside the VPC rather than exposed.
 
-6. Verify. Run infra/bench-filters.py and show me the latency table. Compare it
+   Then run infra/setup-cluster.sh with PROFILE and CB_HOST set. It is
+   idempotent. Afterwards confirm every index reports "online" - a deferred
+   build that silently never ran is the most common way this goes wrong.
+
+   Ask whether I want my own bucket and tenant name instead of the ncgr default.
+   If so set CB_BUCKET, CB_SCOPE and TENANT_ID now, and tell me they cannot
+   change after seeding because tenant_id is part of every document key.
+
+3. App server. Ask if I have a VM for it. The pipeline, mock channels and
+   dashboard are three containers from infra/docker-compose.yml and run happily
+   together on one box - 4 vCPU is enough for small/single, 16 for full. It must
+   reach the cluster on the private network. If I have no VM, help me create
+   one. If I chose the single profile and the box has room, offer to run the
+   containers on the same machine as Couchbase and explain the trade-off: it is
+   simpler, but the load generator then competes with the database for CPU and
+   the latency numbers stop being meaningful.
+
+   Bring it up, then confirm GET /health reports a loaded catalog - templates
+   and event definitions both non-zero - before declaring success.
+
+4. Data. Run apps/seeder-go at the scale the profile implies. Give me a time
+   estimate first and check I want to proceed. Watch for failures rather than
+   assuming success.
+
+5. Verify. Run infra/bench-filters.py and show me the latency table. Compare it
    against the numbers in README.md and tell me honestly whether my cluster is
-   performing in the same range - if it is slower, help me work out why.
+   in the same range. If it is slower, help me work out why rather than
+   explaining it away - on a smaller profile some difference is expected, but a
+   10x gap usually means an index did not build.
 
-7. Mobile (ask whether I want this; it is optional and adds Sync Gateway and
-   Keycloak). The iOS app has no config file - every setting is a compiled
-   constant in ncgrdemo/ncgrdemo/AuthAndSyncManager.swift. Walk me through the
-   block at the top of that file and set each value against what we actually
-   deployed: keycloakDomain, syncGateway, tenantId, scopeName, clientId, realm.
-   Warn me that tenantId, appName and clientId all default to an ncgr-prefixed
-   name but are three unrelated things - Couchbase tenant, a label, and the
-   OAuth2 client - so they do not change together. Then update the ATS exception
-   domains and CFBundleURLSchemes in Info.plist. Getting any of these wrong
-   still builds and runs: it fails as an empty inbox or a failed login with
+6. Mobile sync - optional, ask whether I want it. It adds two more components:
+
+     Keycloak    the OIDC provider. Ask if I have one. If not, help me run
+                 Keycloak 26 in Docker on its own small VM. KC_HOSTNAME must be
+                 the address clients will actually use, because the `iss` claim
+                 is minted from it.
+     Sync Gateway 4.1 against the same cluster. Ask if I have one; if not, help
+                 me deploy it on a VM with enough RAM - it holds the import
+                 backfill in memory, and 2 GiB is not enough for a large
+                 dataset. Configs are in infra/sg/.
+
+   Then the iOS app. It has no config file: every setting is a compiled constant
+   in ncgrdemo/ncgrdemo/AuthAndSyncManager.swift. Walk me through that block and
+   set each value against what we actually deployed - keycloakDomain,
+   syncGateway, tenantId, scopeName, clientId, realm. Warn me that tenantId,
+   appName and clientId all default to an ncgr-prefixed name but are three
+   unrelated things (Couchbase tenant, a label, the OAuth2 client), so they do
+   not change together. Then update the ATS exception domains and
+   CFBundleURLSchemes in Info.plist to match. Getting any of these wrong still
+   builds and still launches: it fails as an empty inbox or a failed login with
    nothing pointing at the cause, so check them with me rather than assuming.
+
+7. Stable addresses. Ask whether I have a DuckDNS account. If I do, take the
+   token and install the updater on each host from infra/duckdns/ so every
+   address survives a restart. If I do not, proceed with raw IPs but warn me
+   that every instance stop/start hands out new ones, and that this is cheap to
+   fix for the dashboard but expensive once Keycloak is involved, because its
+   address is baked into the OIDC issuer.
 
 Rules: show me each command before running anything that costs money or takes
 more than a few minutes. Never put my SSH key or DuckDNS token in a file that
@@ -158,9 +208,35 @@ services.
 
 ---
 
+## Deployment profiles
+
+You do not need the full cluster to see this work. `PROFILE` selects memory
+quotas and replica count:
+
+| Profile | Nodes | Services | RAM/node | Seeds | Use for |
+|---|---|---|---|---|---|
+| `single` | 1 | all five | ~8 GB | ~100k | laptop or one VM |
+| `small` | 3 | all five on each | ~16 GB | a few million | functional demo, failover |
+| `full` | 7 | 3 data · 2 index+query · 2 search | 61–123 GB | 500M | reproducing the benchmark |
+
+```bash
+PROFILE=small CB_HOST=$CB_HOST_PRIVATE ./infra/setup-cluster.sh
+```
+
+Every feature works on every profile — only the numbers need `full`. On `single`
+the bucket is created with **0 replicas**, because Couchbase cannot place a
+replica on the only node and the create fails outright otherwise.
+
+All five services are used: **data** (documents and subdocument mutations),
+**index** and **query** (the dashboard's GSI searches), **search** (full-text on
+the message body), and **eventing** (the device registry, mobile sync only). On
+`small` and `single` they are co-located; only `full` separates them.
+
+---
+
 ## Benchmark — what a 500M-document cluster costs
 
-This is the sizing to copy. Every figure was measured on the cluster below.
+This is the sizing to copy. Every figure was measured on the `full` cluster below.
 
 ### Cluster
 
@@ -247,15 +323,6 @@ pending view instant.
 
 ---
 
-## Scaling down
-
-You do not need 7 nodes to see this work. For a functional demo, a 3-node
-cluster with 5–10M documents reproduces every feature at a fraction of the cost
-and seeds in minutes. Keep Magma, keep the index definitions, and seed with
-`--count 5000000`. Only the benchmark numbers need the full cluster.
-
----
-
 ## Manual setup
 
 Prerequisites: Go 1.24+, Node 20+, pnpm 9, Docker, an AWS account, an EC2 key
@@ -267,7 +334,8 @@ cp infra/demo.env.example infra/demo.env   # then edit: SSH key, hosts, creds
 set -a && . infra/demo.env && set +a
 
 # 1. Bucket, scope, collections, indexes. Idempotent.
-CB_HOST=$CB_HOST_PRIVATE ./infra/setup-cluster.sh
+#    PROFILE picks memory quotas and replicas: single | small | full.
+PROFILE=small CB_HOST=$CB_HOST_PRIVATE ./infra/setup-cluster.sh
 
 # 2. Full-text index (only needed for message-body search)
 CB_HOST=$CB_HOST_PRIVATE ./infra/apply-configs.sh fts

@@ -22,15 +22,49 @@ CB_PASS="${CB_PASS:-password}"
 BUCKET="${BUCKET:-ncgr}"
 SCOPE="${SCOPE:-platform}"
 
-# Memory quotas, MiB PER NODE (see verify_quotas below - we read back and assert)
-DATA_QUOTA_MB=51200      # 50 GiB of 64 GiB data nodes
-INDEX_QUOTA_MB=98304     # 96 GiB of 128 GiB index+query nodes
-FTS_QUOTA_MB=102400      # 100 GiB of 128 GiB search nodes
+# PROFILE picks a default sizing. Every value below can still be overridden
+# individually; the profile only changes what they default to.
+#
+#   full   (default) the benchmarked 7-node cluster: 3 data, 2 index+query,
+#          2 search. Sized for 500M documents.
+#   small  3 nodes, all services co-located, ~16 GiB each. Good for a few
+#          million documents - every feature works, the numbers do not.
+#   single 1 node, all services, ~8 GiB. REPLICAS must be 0: Couchbase cannot
+#          place a replica on the only node, and the bucket create fails
+#          outright rather than degrading.
+#
+# Quotas are MiB PER NODE and are read back and asserted (see verify_quotas).
+PROFILE="${PROFILE:-full}"
 
-# Bucket
-BUCKET_RAM_MB=51200      # per node; 3 data nodes => 150 GiB cluster total
-REPLICAS=1
-NUM_VBUCKETS=1024
+case "$PROFILE" in
+  full)
+    DATA_QUOTA_MB="${DATA_QUOTA_MB:-51200}"    # 50 GiB of 64 GiB data nodes
+    INDEX_QUOTA_MB="${INDEX_QUOTA_MB:-98304}"  # 96 GiB of 128 GiB index+query
+    FTS_QUOTA_MB="${FTS_QUOTA_MB:-102400}"     # 100 GiB of 128 GiB search
+    BUCKET_RAM_MB="${BUCKET_RAM_MB:-51200}"    # per node; 3 data nodes => 150 GiB
+    REPLICAS="${REPLICAS:-1}"
+    ;;
+  small)
+    DATA_QUOTA_MB="${DATA_QUOTA_MB:-6144}"
+    INDEX_QUOTA_MB="${INDEX_QUOTA_MB:-4096}"
+    FTS_QUOTA_MB="${FTS_QUOTA_MB:-2048}"
+    BUCKET_RAM_MB="${BUCKET_RAM_MB:-6144}"
+    REPLICAS="${REPLICAS:-1}"
+    ;;
+  single)
+    DATA_QUOTA_MB="${DATA_QUOTA_MB:-3072}"
+    INDEX_QUOTA_MB="${INDEX_QUOTA_MB:-2048}"
+    FTS_QUOTA_MB="${FTS_QUOTA_MB:-1024}"
+    BUCKET_RAM_MB="${BUCKET_RAM_MB:-3072}"
+    REPLICAS="${REPLICAS:-0}"                  # one node cannot host a replica
+    ;;
+  *)
+    echo "unknown PROFILE '$PROFILE' (expected: full | small | single)" >&2
+    exit 2
+    ;;
+esac
+
+NUM_VBUCKETS="${NUM_VBUCKETS:-1024}"
 
 # Counters collection: TTL backstop. Longest window we use is the per-receiver
 # hourly cap, so 2h. Per-document TTLs are shorter and win over this.
@@ -250,7 +284,9 @@ create_collection eventing_metadata
 
 # --- 4. GSI indexes -------------------------------------------------------
 # Large indexes are DEFERRED. Build them AFTER the 500M seed completes:
-#   BUILD INDEX ON `<bucket>`.`<scope>`.`notifications`(idx_multi, idx_user_multi, idx_retry);
+#   BUILD INDEX ON `<bucket>`.`<scope>`.`notifications`
+#     (idx_multi, idx_user_multi, idx_retry,
+#      idx_pending_feed, idx_cblite_feed, idx_seen_feed);
 # Building during the load is dramatically slower. Measured: ~50 min per
 # composite index over 514M items on 2x (16 vCPU / 123.5 GB) index nodes.
 #
@@ -285,6 +321,46 @@ n1ql "CREATE INDEX \`idx_user_multi\` ON ${K}.\`notifications\`(\`tenant_id\`, \
       \`sort_key\` DESC, \`status\`, \`channel\`, \`app_name\`, \`type\`, \`seen\`)
       WITH {\"defer_build\": true, \"num_replica\": ${REPLICAS}}" \
      "idx_user_multi (tenant_id, user_id, sort_key DESC, + keyword filters)"
+
+# Three partial indexes, one per value that idx_multi cannot serve.
+#
+# idx_multi leads with (tenant_id, sort_key DESC), so every other key after the
+# range is a post-filter: the scan walks the feed in time order and tests each
+# entry. That is fine when matches are near the top, and catastrophic when they
+# are not. Measured on 522M documents BEFORE these indexes existed:
+#
+#   status=PENDING    82,366 ms   pending work is old; ~20M newer entries first
+#   channel=cblite     timeout    5 documents in the whole collection
+#   seen=true          timeout    only seeded data carries it
+#
+# Each index below indexes only its own value, so the scan starts inside the
+# matching set and stops at LIMIT. After adding them: 6.2 ms, 3.4 ms, 7.9 ms.
+#
+# They are cheap because they are partial - idx_pending_feed holds 25M entries
+# against idx_multi's 522M, about 6 GB against 86 GB.
+#
+# NOTE: db.go writes these three values as LITERALS rather than bound
+# parameters. A partial index can only be chosen when the planner can prove its
+# condition holds, and the pipeline prepares its statements with the parameters
+# still unbound. With a parameter the planner silently falls back to idx_multi
+# and the timeouts above return, with no error to explain why.
+n1ql "CREATE INDEX \`idx_pending_feed\` ON ${K}.\`notifications\`(\`tenant_id\`,
+      \`sort_key\` DESC, \`channel\`, \`app_name\`, \`seen\`, \`user_id\`)
+      WHERE \`status\` = \"PENDING\"
+      WITH {\"defer_build\": true, \"num_replica\": ${REPLICAS}}" \
+     "idx_pending_feed (partial, WHERE status='PENDING')"
+
+n1ql "CREATE INDEX \`idx_cblite_feed\` ON ${K}.\`notifications\`(\`tenant_id\`,
+      \`sort_key\` DESC, \`status\`, \`app_name\`, \`seen\`, \`user_id\`)
+      WHERE \`channel\` = \"cblite\"
+      WITH {\"defer_build\": true, \"num_replica\": ${REPLICAS}}" \
+     "idx_cblite_feed (partial, WHERE channel='cblite')"
+
+n1ql "CREATE INDEX \`idx_seen_feed\` ON ${K}.\`notifications\`(\`tenant_id\`,
+      \`sort_key\` DESC, \`status\`, \`channel\`, \`app_name\`, \`user_id\`)
+      WHERE \`seen\` = true
+      WITH {\"defer_build\": true, \"num_replica\": ${REPLICAS}}" \
+     "idx_seen_feed (partial, WHERE seen=true)"
 
 # Partial index: only in-flight and backing-off work. Stays in the thousands
 # even when the collection holds 500M documents.
@@ -357,20 +433,21 @@ for r in json.load(sys.stdin).get("results",[]):
     print("   %-22s %-16s %s" % (r.get("name"), r.get("keyspace_id"), r.get("state")))
 ' || true
 
-cat <<'EOF'
+cat <<EOF
 
 ---------------------------------------------------------------------------
-NEXT STEPS (in order)
+NEXT STEPS (in order)  [profile: ${PROFILE}]
 
   1. Verify above: storageBackend=magma, evictionPolicy=fullEviction,
-     numVBuckets=1024, replicaNumber=1.
+     numVBuckets=${NUM_VBUCKETS}, replicaNumber=${REPLICAS}.
      If storageBackend is not magma, STOP - fix before seeding.
 
   2. Seed the 500M notifications (hours). Indexes stay deferred throughout.
 
   3. Build the GSI indexes only after seeding completes:
        BUILD INDEX ON `<bucket>`.`<scope>`.`notifications`
-         (idx_multi, idx_user_multi, idx_retry);
+         (idx_multi, idx_user_multi, idx_retry,
+          idx_pending_feed, idx_cblite_feed, idx_seen_feed);
        BUILD INDEX ON `<bucket>`.`<scope>`.`events`(idx_evt_suppressed);
 
   4. FTS will index continuously as documents land. Building it over 500M

@@ -24,6 +24,11 @@ dist/
 __pycache__/
 .DS_Store
 
+# editor scratch
+*.swp
+*.swo
+*~
+
 # Go build output
 apps/pipeline-go/pipeline
 apps/seeder-go/ncgr-seed
