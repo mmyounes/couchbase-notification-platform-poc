@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+
+html, body {
+  @apply bg-bg text-text;
+  font-feature-settings: 'tnum' 1; /* tabular figures so counters don't jitter */
+}
+
+@layer components {
+  .panel      { @apply bg-panel border border-border rounded-lg; }
+  .panel-hd   { @apply px-4 py-2.5 border-b border-border text-sm font-medium text-muted; }
+  .field      { @apply bg-bg border border-border rounded px-2.5 py-1.5 text-sm text-text
+                       outline-none focus:border-accent w-full; }
+  .btn        { @apply px-3.5 py-1.5 rounded text-sm font-medium border border-border
+                       hover:border-accent disabled:opacity-40 disabled:cursor-not-allowed
+                       transition-colors; }
+  .btn-primary{ @apply bg-accent border-accent text-white hover:brightness-110; }
+  .btn-danger { @apply bg-danger border-danger text-white hover:brightness-110; }
+  .lbl        { @apply block text-[11px] uppercase tracking-wide text-muted mb-1; }
+  .cell       { @apply px-3 py-2 text-sm border-b border-border/60; }
+}

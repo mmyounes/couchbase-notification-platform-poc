@@ -1,0 +1,195 @@
+{
+  "name": "fts_notifications",
+  "type": "fulltext-index",
+  "sourceType": "gocbcore",
+  "sourceName": "${CB_BUCKET}",
+  "planParams": {
+    "maxPartitionsPerPIndex": 128,
+    "indexPartitions": 32,
+    "numReplicas": 1
+  },
+  "params": {
+    "doc_config": {
+      "mode": "scope.collection.type_field",
+      "type_field": "_type",
+      "docid_prefix_delim": "",
+      "docid_regexp": ""
+    },
+    "mapping": {
+      "analysis": {},
+      "default_analyzer": "standard",
+      "default_datetime_parser": "dateTimeOptional",
+      "default_field": "_all",
+      "default_mapping": {
+        "dynamic": false,
+        "enabled": false
+      },
+      "default_type": "_default",
+      "docvalues_dynamic": false,
+      "index_dynamic": false,
+      "store_dynamic": false,
+      "type_field": "_type",
+      "types": {
+        "${CB_SCOPE}.notifications": {
+          "dynamic": false,
+          "enabled": true,
+          "properties": {
+            "user_id": {
+              "enabled": true,
+              "dynamic": false,
+              "fields": [
+                {
+                  "name": "user_id",
+                  "type": "text",
+                  "analyzer": "keyword",
+                  "index": true,
+                  "store": false,
+                  "docvalues": false,
+                  "include_in_all": false
+                }
+              ]
+            },
+            "app_name": {
+              "enabled": true,
+              "dynamic": false,
+              "fields": [
+                {
+                  "name": "app_name",
+                  "type": "text",
+                  "analyzer": "keyword",
+                  "index": true,
+                  "store": false,
+                  "docvalues": false,
+                  "include_in_all": false
+                }
+              ]
+            },
+            "channel": {
+              "enabled": true,
+              "dynamic": false,
+              "fields": [
+                {
+                  "name": "channel",
+                  "type": "text",
+                  "analyzer": "keyword",
+                  "index": true,
+                  "store": false,
+                  "docvalues": false,
+                  "include_in_all": false
+                }
+              ]
+            },
+            "status": {
+              "enabled": true,
+              "dynamic": false,
+              "fields": [
+                {
+                  "name": "status",
+                  "type": "text",
+                  "analyzer": "keyword",
+                  "index": true,
+                  "store": false,
+                  "docvalues": false,
+                  "include_in_all": false
+                }
+              ]
+            },
+            "type": {
+              "enabled": true,
+              "dynamic": false,
+              "fields": [
+                {
+                  "name": "type",
+                  "type": "text",
+                  "analyzer": "keyword",
+                  "index": true,
+                  "store": false,
+                  "docvalues": false,
+                  "include_in_all": false
+                }
+              ]
+            },
+            "tenant_id": {
+              "enabled": true,
+              "dynamic": false,
+              "fields": [
+                {
+                  "name": "tenant_id",
+                  "type": "text",
+                  "analyzer": "keyword",
+                  "index": true,
+                  "store": false,
+                  "docvalues": false,
+                  "include_in_all": false
+                }
+              ]
+            },
+            "subject": {
+              "enabled": true,
+              "dynamic": false,
+              "fields": [
+                {
+                  "name": "subject",
+                  "type": "text",
+                  "analyzer": "standard",
+                  "index": true,
+                  "store": false,
+                  "docvalues": false,
+                  "include_in_all": true
+                }
+              ]
+            },
+            "message": {
+              "enabled": true,
+              "dynamic": false,
+              "fields": [
+                {
+                  "name": "message",
+                  "type": "text",
+                  "analyzer": "standard",
+                  "index": true,
+                  "store": false,
+                  "docvalues": false,
+                  "include_in_all": true
+                }
+              ]
+            },
+            "timestamp": {
+              "enabled": true,
+              "dynamic": false,
+              "fields": [
+                {
+                  "name": "timestamp",
+                  "type": "datetime",
+                  "index": true,
+                  "store": false,
+                  "docvalues": false,
+                  "include_in_all": false
+                }
+              ]
+            },
+            "seen": {
+              "enabled": true,
+              "dynamic": false,
+              "fields": [
+                {
+                  "name": "seen",
+                  "type": "boolean",
+                  "index": true,
+                  "store": false,
+                  "docvalues": false,
+                  "include_in_all": false
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "store": {
+      "indexType": "scorch",
+      "segmentVersion": 15
+    }
+  },
+  "sourceParams": {}
+}

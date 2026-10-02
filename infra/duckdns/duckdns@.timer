@@ -1,0 +1,12 @@
+[Unit]
+Description=Periodic DuckDNS refresh for %i.duckdns.org
+
+[Timer]
+# OnBootSec covers the case this exists for: the instance came back with a new
+# public IP. The periodic tick is belt-and-braces for a record cleared serverside.
+OnBootSec=30s
+OnUnitActiveSec=10min
+Unit=duckdns@%i.service
+
+[Install]
+WantedBy=timers.target

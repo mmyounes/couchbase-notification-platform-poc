@@ -1,0 +1,67 @@
+# Application layer for the Notification Platform PoC.
+# One EC2 instance; Couchbase runs on separate nodes.
+#
+# Three services. The pipeline is a single Go process whose goroutines use every
+# core, so it scales up rather than out: no load balancer, no scheduler
+# singleton, no separate load generator, and one metrics registry. See §10.1c of
+# the design spec for why that matters.
+
+name: ncgr
+
+services:
+  mock-channels:
+    build: { context: .., dockerfile: apps/mock-channels/Dockerfile }
+    environment:
+      PORT: 8081
+      LOG_LEVEL: ${LOG_LEVEL:-warn}
+      FAILURE_RATE: ${FAILURE_RATE:-0}
+      PERMANENT_SHARE: ${PERMANENT_SHARE:-0.2}
+      LATENCY_SCALE: ${LATENCY_SCALE:-1}
+    # Replicated because it is Node and therefore single-threaded: one core is
+    # its hard ceiling, and at high event rates the SIMULATED PROVIDER becomes
+    # the bottleneck rather than Couchbase. Docker DNS returns every replica and
+    # the Go client's connection pool spreads across them.
+    expose: ["8081"]
+    deploy:
+      replicas: ${MOCK_REPLICAS:-4}
+    restart: unless-stopped
+
+  pipeline:
+    build: { context: .., dockerfile: apps/pipeline-go/Dockerfile }
+    environment:
+      PORT: 8080
+      CB_HOST: ${CB_HOST:?set CB_HOST to a Couchbase node address}
+      CB_USER: ${CB_USER:-Administrator}
+      CB_PASS: ${CB_PASS:?set CB_PASS}
+      CB_BUCKET: ${CB_BUCKET:-ncgr}
+      CB_SCOPE: ${CB_SCOPE:-platform}
+      TENANT_ID: ${TENANT_ID:-ncgr}
+      MOCK_CHANNELS_URL: http://mock-channels:8081
+      FTS_URL: ${FTS_URL:-http://${CB_HOST}:8091/_p/fts}
+      FTS_INDEX: ${FTS_INDEX:-fts_notifications}
+      POLICY_REFRESH_MS: ${POLICY_REFRESH_MS:-10000}
+      RETRY_TICK_MS: ${RETRY_TICK_MS:-1000}
+      RETRY_BATCH: ${RETRY_BATCH:-5000}
+      RETRY_HORIZON_MS: ${RETRY_HORIZON_MS:-3600000}
+      # See config.go: sized against provider latency, not guessed.
+      DELIVERY_WORKERS: ${DELIVERY_WORKERS:-1024}
+      LOADGEN_MAX_INFLIGHT: ${LOADGEN_MAX_INFLIGHT:-16384}
+      # gocb defaults to ONE connection per data node, which serialises all KV
+      # traffic per node and dominated latency long before CPU did.
+      KV_POOL_SIZE: ${KV_POOL_SIZE:-8}
+      STALE_AFTER_MS: ${STALE_AFTER_MS:-60000}
+      DEFAULT_TEXT_WINDOW_MS: ${DEFAULT_TEXT_WINDOW_MS:-604800000}
+    ports: ["8080:8080"]
+    depends_on: [mock-channels]
+    restart: unless-stopped
+
+  web:
+    build: { context: .., dockerfile: apps/web/Dockerfile }
+    environment:
+      PORT: 3000
+      # Next proxies /api/* here server-side, so only port 3000 needs to be
+      # reachable from outside and every browser call is same-origin.
+      INTERNAL_API_URL: http://pipeline:8080
+    ports: ["3000:3000"]
+    depends_on: [pipeline]
+    restart: unless-stopped

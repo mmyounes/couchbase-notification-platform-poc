@@ -1,0 +1,33 @@
+{
+  "bucket": "${CB_BUCKET}",
+  "name": "db",
+  "offline": false,
+  "enable_shared_bucket_access": true,
+  "import_docs": true,
+  "num_index_replicas": 1,
+  "scopes": {
+    "${CB_SCOPE}": {
+      "collections": {
+        "notifications": {
+          "sync": "function (doc, oldDoc, meta) {\n  // Devices may not delete notifications. requireRole throws for an authenticated\n  // device user and is a no-op during import, so this constrains devices only.\n  if (doc._deleted) {\n    requireRole(\"admin\");\n    return;\n  }\n\n  // Only the in-app channel reaches a device. The import filter already keeps\n  // email/sms/push out, but channel membership is decided HERE, so this is the\n  // enforcing copy: a provider notification that somehow got imported (an\n  // on-demand admin GET, or an import predating this rule) is assigned no\n  // channel and is therefore visible to nobody. Returning without calling\n  // channel() is also what lets _resync retire documents imported earlier.\n  if (doc.channel !== \"cblite\") {\n    return;\n  }\n\n  // Route by the channel array the pipeline already writes (util.go syncChannel:\n  // \"tenant::{tenant}::user::{user_id}\"). Deriving a channel name here instead\n  // would duplicate that rule in a second place and let the two drift.\n  if (!doc.sync_channels || !doc.user_id) {\n    throw({forbidden: \"notification requires sync_channels and user_id\"});\n  }\n  channel(doc.sync_channels);\n  access(doc.user_id, doc.sync_channels);\n\n  // A device owns exactly one field: seen. Everything else belongs to the\n  // pipeline, which rewrites these documents after every delivery attempt.\n  // Compare field by field rather than stringifying the whole body, so top-level\n  // key ordering cannot produce a false rejection.\n  if (oldDoc && !oldDoc._deleted) {\n    var k;\n    for (k in doc) {\n      if (k.charAt(0) === '_' || k === 'seen') continue;\n      if (JSON.stringify(doc[k]) !== JSON.stringify(oldDoc[k])) { requireRole(\"admin\"); return; }\n    }\n    for (k in oldDoc) {\n      if (k.charAt(0) === '_' || k === 'seen') continue;\n      if (!(k in doc)) { requireRole(\"admin\"); return; }\n    }\n  }\n}\n",
+          "import_filter": "function (doc) {\n  // Only cblite notifications reach a device.\n  //\n  // One event fans out to several channels, and importing all of them meant a\n  // single event arrived on the phone three times over, tagged email / sms /\n  // push - one entry per provider the platform happened to use. Those three are\n  // records of an outbound provider call, not things a user reads in the app.\n  // cblite is the in-app channel, so exactly one document per event syncs.\n  //\n  // This also replaces the previous user allowlist. No user needs naming here\n  // any more: send to anyone from the Send console and their cblite\n  // notification syncs. And because the ~523M seeded documents are all\n  // email / sms / push, none of them are imported.\n  return doc.channel === \"cblite\";\n}\n"
+        },
+        "devices": {
+          "sync": "function (doc, oldDoc, meta) {\n  if (doc._deleted) {\n    requireRole(\"admin\");\n    return;\n  }\n  if (!doc.user_id || !doc.tenant_id) {\n    throw({forbidden: \"device requires tenant_id and user_id\"});\n  }\n  // Only the authenticated user may register a device in their own name.\n  requireUser(doc.user_id);\n\n  // Separate channel from notifications, so the app's notification replicator\n  // does not pull device registrations it has no use for.\n  var ch = \"tenant::\" + doc.tenant_id + \"::user::\" + doc.user_id + \"::devices\";\n  channel(ch);\n  access(doc.user_id, ch);\n}\n",
+          "import_filter": "function (doc) {\n  // Device registrations carry no channel. Import any document that looks like\n  // a real registration; this skips Sync Gateway's own _sync:syncInfo, which\n  // lives in this collection and has no user_id.\n  return !!doc.user_id;\n}\n"
+        }
+      }
+    }
+  },
+  "oidc": {
+    "providers": {
+      "keycloak": {
+        "issuer": "http://CHANGEME-kc.duckdns.org:8080/realms/${KC_REALM}",
+        "client_id": "ncgrdemo",
+        "register": true,
+        "username_claim": "preferred_username",
+        "allow_unsigned_provider_tokens": false
+      }
+    }
+  }
+}

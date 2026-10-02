@@ -1,0 +1,12 @@
+**/node_modules
+**/dist
+**/.next
+**/.turbo
+.git
+docs
+infra/*.log
+*.pem
+*.key
+apps/seeder-go
+**/*.log
+.DS_Store

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- App Transport Security: iOS blocks cleartext by default, which would fail
+	     both the Keycloak token exchange (http://) and the Sync Gateway replicator
+	     (ws://) at runtime with an ATS policy error. These are scoped exceptions
+	     for the two PoC hosts rather than NSAllowsArbitraryLoads, so every other
+	     destination still requires TLS. Remove both once the hosts serve HTTPS.
+
+	     The keys are DuckDNS hostnames, not IPs, so a host restart no longer
+	     requires rebuilding the app to change them. Keep NSIncludesSubdomains
+	     false and keep the keys at this exact depth: keying on "duckdns.org"
+	     with subdomains true would permit cleartext to every DuckDNS host on
+	     the internet, not just ours.
+
+	     THESE TWO KEYS MUST MATCH keycloakDomain and syncGateway in
+	     AuthAndSyncManager.swift. If they drift, the app still builds and
+	     launches, then fails at login with NSURLErrorDomain -1022 blaming ATS
+	     rather than the mismatch. -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>CHANGEME-kc.duckdns.org</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<false/>
+			</dict>
+			<key>CHANGEME-sg.duckdns.org</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<false/>
+			</dict>
+		</dict>
+	</dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.example.ncgrdemo</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>ncgrdemo</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

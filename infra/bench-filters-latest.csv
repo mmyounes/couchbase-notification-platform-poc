@@ -1,0 +1,222 @@
+phase,filters,query_string,gsi_outcome,gsi_server_ms,gsi_wall_ms,fts_outcome,fts_server_ms,fts_wall_ms,fts_total_hits,rows_gsi,rows_fts,winner,diagnosis
+sweep,channel=email,channel=email,ok,4.916,795.3,ok,1815.012,2601.0,176652151,100,100,GSI 369x,
+sweep,channel=sms,channel=sms,ok,4.751,795.6,ok,1670.757,2468.7,151175318,100,100,GSI 352x,
+sweep,channel=push,channel=push,ok,4.581,836.5,ok,1984.221,2784.7,193483658,100,100,GSI 433x,
+sweep,channel=cblite,channel=cblite,timeout,,5211.7,ok,4.549,410.9,5,0,5,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+sweep,status=PENDING,status=PENDING,timeout,,5203.3,ok,485.766,1278.4,24962764,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+sweep,status=DELIVERED,status=DELIVERED,ok,5.315,802.4,ok,4193.988,4983.8,444717201,100,100,GSI 789x,
+sweep,status=FAILED,status=FAILED,ok,10.251,808.8,ok,710.508,1514.0,51631167,100,100,GSI 69x,
+sweep,type=account_alert,type=account_alert,ok,5.162,806.7,ok,601.483,1489.4,34985522,100,100,GSI 117x,
+sweep,type=appointment_reminder,type=appointment_reminder,ok,9.607,803.5,ok,864.79,1661.5,66632309,100,100,GSI 90x,
+sweep,type=document_expiry,type=document_expiry,ok,6.138,808.6,ok,616.528,1423.4,40223632,100,100,GSI 100x,
+sweep,type=invoice_ready,type=invoice_ready,ok,6.179,804.7,ok,798.176,1604.6,61334570,100,100,GSI 129x,
+sweep,type=otp_login,type=otp_login,ok,5.022,803.0,ok,1070.095,1912.3,86648890,100,100,GSI 213x,
+sweep,type=payment_received,type=payment_received,ok,5.652,807.7,ok,710.873,1556.0,52853811,100,100,GSI 126x,
+sweep,type=reset_password,type=reset_password,ok,5.783,795.9,ok,1764.588,2560.5,142632761,100,100,GSI 305x,
+sweep,type=service_request_update,type=service_request_update,ok,5.116,800.8,ok,615.328,1407.6,35999637,100,100,GSI 120x,
+sweep,app_name=ncgrdemo,app_name=ncgrdemo,ok,5.624,797.0,ok,1030.269,1828.8,86916597,100,100,GSI 183x,
+sweep,app_name=portal,app_name=portal,ok,5.453,793.0,ok,1032.509,1825.6,86865612,100,100,GSI 189x,
+sweep,app_name=hr_self_service,app_name=hr_self_service,ok,5.577,805.3,ok,1018.799,1814.8,86893470,100,100,GSI 183x,
+sweep,app_name=procurement,app_name=procurement,ok,8.558,808.4,ok,1027.119,1908.8,86890953,100,100,GSI 120x,
+sweep,app_name=payroll,app_name=payroll,ok,5.136,800.8,ok,1037.74,1834.7,86842614,100,100,GSI 202x,
+sweep,app_name=licensing,app_name=licensing,ok,5.058,808.3,ok,1022.14,1837.7,86901886,100,100,GSI 202x,
+sweep,seen=true,seen=true,timeout,,5200.3,ok,1971.56,2768.1,191258613,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+sweep,seen=false,seen=false,ok,6.629,810.9,ok,3155.557,3957.0,330052519,100,100,GSI 476x,
+sweep,time=last30d,from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z,ok,5.514,814.4,ok,866.801,1663.1,39015128,100,100,GSI 157x,
+sweep,time=oct2025,from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z,ok,13.929,806.9,ok,970.568,1758.8,42469305,100,100,GSI 70x,
+matrix,time [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z,ok,5.923,810.5,ok,874.857,1677.5,39015128,100,100,GSI 148x,
+matrix,time [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z,ok,5.063,798.9,ok,1001.53,1791.6,42469305,100,100,GSI 198x,
+matrix,user_id,user_id=usr_055270,ok,4.606,792.3,ok,98.872,896.3,755,100,100,GSI 21x,
+matrix,app_name,app_name=ncgrdemo,ok,4.849,803.2,ok,1023.866,1821.4,86916597,100,100,GSI 211x,
+matrix,channel,channel=email,ok,5.404,796.7,ok,1824.16,3033.7,176652151,100,100,GSI 338x,
+matrix,status,status=PENDING,timeout,,5248.1,ok,486.458,1281.9,24962764,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,type,type=otp_login,ok,6.444,798.0,ok,1012.464,1808.3,86648890,100,100,GSI 157x,
+matrix,seen,seen=false,ok,5.386,811.9,ok,3182.23,4031.4,330052519,100,100,GSI 591x,
+matrix,time+user_id [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270,ok,5.68,801.1,ok,62.623,851.7,250,100,100,GSI 11x,
+matrix,time+user_id [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270,ok,4.743,605.6,ok,58.614,687.6,31,31,31,GSI 12x,
+matrix,time+app_name [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&app_name=ncgrdemo,ok,5.899,1017.4,ok,665.509,1467.9,6504046,100,100,GSI 113x,
+matrix,time+app_name [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&app_name=ncgrdemo,ok,11.196,803.0,ok,860.962,1655.7,7085876,100,100,GSI 77x,
+matrix,time+channel [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&channel=email,ok,5.358,802.3,ok,851.52,1650.2,13857239,100,100,GSI 159x,
+matrix,time+channel [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&channel=email,ok,5.587,807.4,ok,1064.869,1855.6,14335814,100,100,GSI 191x,
+matrix,time+status [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&status=PENDING,timeout,,5202.1,ok,400.196,1202.3,885568,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+status [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&status=PENDING,ok,33.772,850.0,ok,625.227,1440.3,2122222,100,100,GSI 19x,
+matrix,time+type [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&type=otp_login,ok,5.78,807.3,ok,630.228,1428.2,5233176,100,100,GSI 109x,
+matrix,time+type [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&type=otp_login,ok,10.389,800.0,ok,861.02,1653.0,7169992,100,100,GSI 83x,
+matrix,time+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&seen=false,ok,5.598,805.7,ok,1109.305,2100.7,32241239,100,100,GSI 198x,
+matrix,time+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&seen=false,ok,5.633,807.5,ok,1228.382,2030.0,26221667,100,100,GSI 218x,
+matrix,user_id+app_name,user_id=usr_055270&app_name=ncgrdemo,ok,5.321,797.0,ok,77.42,878.5,104,100,100,GSI 15x,
+matrix,user_id+channel,user_id=usr_055270&channel=email,ok,8.248,809.5,ok,117.995,932.4,275,100,100,GSI 14x,
+matrix,user_id+status,user_id=usr_055270&status=PENDING,ok,5.3,596.6,ok,42.645,645.6,32,32,32,GSI 8x,
+matrix,user_id+type,user_id=usr_055270&type=otp_login,ok,8.011,807.6,ok,66.583,857.9,82,82,82,GSI 8x,
+matrix,user_id+seen,user_id=usr_055270&seen=false,ok,4.659,802.6,ok,160.347,962.7,568,100,100,GSI 34x,
+matrix,app_name+channel,app_name=ncgrdemo&channel=email,ok,7.652,807.7,ok,727.147,1544.4,29455219,100,100,GSI 95x,
+matrix,app_name+status,app_name=ncgrdemo&status=PENDING,timeout,,5204.4,ok,326.895,1124.9,4162286,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,app_name+type,app_name=ncgrdemo&type=otp_login,timeout,,5203.5,ok,497.399,1322.0,14445118,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,app_name+seen,app_name=ncgrdemo&seen=false,ok,5.774,796.4,ok,1029.853,1872.4,55030100,100,100,GSI 178x,
+matrix,channel+status,channel=email&status=PENDING,timeout,,5201.0,ok,416.836,1217.2,8428866,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,channel+type,channel=email&type=otp_login,timeout,,5204.6,ok,5.27,407.2,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,channel+seen,channel=email&seen=false,ok,5.522,802.0,ok,1696.225,2495.2,112095688,100,100,GSI 307x,
+matrix,status+type,status=PENDING&type=otp_login,timeout,,5202.7,ok,325.333,1124.8,4213736,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,status+seen,status=PENDING&seen=false,timeout,,5201.8,ok,673.55,1699.1,24962764,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,type+seen,type=otp_login&seen=false,timeout,,5206.0,ok,1002.899,1798.0,54367020,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+user_id+app_name [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&app_name=ncgrdemo,ok,3.527,602.9,ok,57.639,646.8,30,30,30,GSI 16x,
+matrix,time+user_id+app_name [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&app_name=ncgrdemo,ok,4.069,404.2,ok,46.371,445.1,8,8,8,GSI 11x,
+matrix,time+user_id+channel [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&channel=email,ok,8.752,798.1,ok,72.53,868.3,96,96,96,GSI 8x,
+matrix,time+user_id+channel [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&channel=email,ok,2.558,414.3,ok,70.233,474.9,13,13,13,GSI 27x,
+matrix,time+user_id+status [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&status=PENDING,ok,2.063,400.7,ok,30.437,434.6,2,2,2,GSI 15x,
+matrix,time+user_id+status [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&status=PENDING,ok,1.671,401.6,ok,17.327,415.8,3,3,3,GSI 10x,
+matrix,time+user_id+type [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&type=otp_login,ok,2.83,591.5,ok,49.731,636.9,22,22,22,GSI 18x,
+matrix,time+user_id+type [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&type=otp_login,ok,1.722,397.8,ok,23.472,433.5,0,0,0,GSI 14x,
+matrix,time+user_id+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&seen=false,ok,5.464,798.8,ok,87.08,884.4,242,100,100,GSI 16x,
+matrix,time+user_id+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&seen=false,ok,2.956,597.9,ok,77.809,678.3,20,20,20,GSI 26x,
+matrix,time+app_name+channel [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&app_name=ncgrdemo&channel=email,ok,8.236,813.6,ok,673.233,1474.8,2311082,100,100,GSI 82x,
+matrix,time+app_name+channel [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&app_name=ncgrdemo&channel=email,ok,6.071,801.7,ok,933.41,1724.6,2392101,100,100,GSI 154x,
+matrix,time+app_name+status [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&app_name=ncgrdemo&status=PENDING,timeout,,5202.0,ok,392.476,1188.7,147857,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+app_name+status [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&app_name=ncgrdemo&status=PENDING,ok,11.56,807.2,ok,616.379,1474.8,355000,100,100,GSI 53x,
+matrix,time+app_name+type [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&app_name=ncgrdemo&type=otp_login,ok,8.983,797.4,ok,561.384,1353.3,870604,100,100,GSI 62x,
+matrix,time+app_name+type [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&app_name=ncgrdemo&type=otp_login,ok,7.078,800.3,ok,841.792,1712.0,1196024,100,100,GSI 119x,
+matrix,time+app_name+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&app_name=ncgrdemo&seen=false,ok,5.606,795.1,ok,806.421,1596.6,5375496,100,100,GSI 144x,
+matrix,time+app_name+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&app_name=ncgrdemo&seen=false,ok,19.682,809.7,ok,1007.96,1832.5,4375057,100,100,GSI 51x,
+matrix,time+channel+status [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&channel=email&status=PENDING,timeout,,5202.9,ok,464.882,1262.6,298894,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+channel+status [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&channel=email&status=PENDING,ok,8.182,804.1,ok,741.636,1540.5,715875,100,100,GSI 91x,
+matrix,time+channel+type [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&channel=email&type=otp_login,timeout,,5202.9,ok,390.922,1016.5,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+channel+type [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&channel=email&type=otp_login,timeout,,5199.6,ok,625.403,1097.8,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+channel+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&channel=email&seen=false,ok,5.966,795.1,ok,1012.232,1810.0,11570995,100,100,GSI 170x,
+matrix,time+channel+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&channel=email&seen=false,ok,6.161,836.0,ok,1245.708,2046.1,8850135,100,100,GSI 202x,
+matrix,time+status+type [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&status=PENDING&type=otp_login,timeout,,5203.7,ok,409.099,1207.2,149404,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+status+type [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&status=PENDING&type=otp_login,ok,11.238,815.0,ok,600.388,1446.4,359089,100,100,GSI 53x,
+matrix,time+status+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&status=PENDING&seen=false,timeout,,5204.1,ok,605.609,1413.3,885568,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+status+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&status=PENDING&seen=false,ok,5.897,796.2,ok,798.964,1597.0,2122222,100,100,GSI 135x,
+matrix,time+type+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&type=otp_login&seen=false,ok,11.565,804.3,ok,788.505,1582.7,4088147,100,100,GSI 68x,
+matrix,time+type+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&type=otp_login&seen=false,ok,5.581,805.4,ok,1034.762,1836.5,4427613,100,100,GSI 185x,
+matrix,user_id+app_name+channel,user_id=usr_055270&app_name=ncgrdemo&channel=email,ok,8.661,607.3,ok,55.407,686.8,37,37,37,GSI 6x,
+matrix,user_id+app_name+status,user_id=usr_055270&app_name=ncgrdemo&status=PENDING,ok,2.673,417.4,ok,22.752,527.0,10,10,10,GSI 9x,
+matrix,user_id+app_name+type,user_id=usr_055270&app_name=ncgrdemo&type=otp_login,ok,2.91,404.4,ok,45.932,442.3,10,10,10,GSI 16x,
+matrix,user_id+app_name+seen,user_id=usr_055270&app_name=ncgrdemo&seen=false,ok,6.061,805.9,ok,119.764,911.9,82,82,82,GSI 20x,
+matrix,user_id+channel+status,user_id=usr_055270&channel=email&status=PENDING,ok,2.953,409.3,ok,51.762,455.6,12,12,12,GSI 18x,
+matrix,user_id+channel+type,user_id=usr_055270&channel=email&type=otp_login,ok,1.839,407.4,ok,17.347,420.3,0,0,0,GSI 9x,
+matrix,user_id+channel+seen,user_id=usr_055270&channel=email&seen=false,ok,5.288,811.8,ok,166.426,972.6,207,100,100,GSI 31x,
+matrix,user_id+status+type,user_id=usr_055270&status=PENDING&type=otp_login,ok,2.449,412.8,ok,44.329,444.4,4,4,4,GSI 18x,
+matrix,user_id+status+seen,user_id=usr_055270&status=PENDING&seen=false,ok,4.188,603.9,ok,65.334,656.4,32,32,32,GSI 16x,
+matrix,user_id+type+seen,user_id=usr_055270&type=otp_login&seen=false,ok,4.681,609.5,ok,97.091,694.9,62,62,62,GSI 21x,
+matrix,app_name+channel+status,app_name=ncgrdemo&channel=email&status=PENDING,timeout,,5205.1,ok,314.399,1121.5,1404907,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,app_name+channel+type,app_name=ncgrdemo&channel=email&type=otp_login,timeout,,5207.1,ok,10.721,412.9,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,app_name+channel+seen,app_name=ncgrdemo&channel=email&seen=false,ok,8.214,917.5,ok,795.656,1610.5,18690362,100,100,GSI 97x,
+matrix,app_name+status+type,app_name=ncgrdemo&status=PENDING&type=otp_login,timeout,,5212.7,ok,252.54,1049.7,701966,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,app_name+status+seen,app_name=ncgrdemo&status=PENDING&seen=false,timeout,,5204.9,ok,425.503,1223.7,4162286,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,app_name+type+seen,app_name=ncgrdemo&type=otp_login&seen=false,ok,14.869,821.1,ok,571.843,1363.9,9064933,100,100,GSI 38x,
+matrix,channel+status+type,channel=email&status=PENDING&type=otp_login,timeout,,5202.2,ok,6.264,405.5,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,channel+status+seen,channel=email&status=PENDING&seen=false,timeout,,5203.3,ok,573.584,1362.6,8428866,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,channel+type+seen,channel=email&type=otp_login&seen=false,timeout,,5204.8,ok,5.624,402.2,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,status+type+seen,status=PENDING&type=otp_login&seen=false,timeout,,5200.7,ok,451.654,1246.5,4213736,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+user_id+app_name+channel [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&app_name=ncgrdemo&channel=email,ok,6.521,407.6,ok,65.97,473.3,10,10,10,GSI 10x,
+matrix,time+user_id+app_name+channel [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&app_name=ncgrdemo&channel=email,ok,6.539,414.9,ok,40.633,442.0,3,3,3,GSI 6x,
+matrix,time+user_id+app_name+status [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&app_name=ncgrdemo&status=PENDING,ok,3.51,397.0,ok,36.046,447.9,1,1,1,GSI 10x,
+matrix,time+user_id+app_name+status [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&app_name=ncgrdemo&status=PENDING,ok,2.359,401.2,ok,19.532,455.2,3,3,3,GSI 8x,
+matrix,time+user_id+app_name+type [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&app_name=ncgrdemo&type=otp_login,ok,4.629,402.8,ok,45.205,443.8,4,4,4,GSI 10x,
+matrix,time+user_id+app_name+type [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&app_name=ncgrdemo&type=otp_login,ok,1.592,405.9,ok,35.777,440.2,0,0,0,GSI 22x,
+matrix,time+user_id+app_name+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&app_name=ncgrdemo&seen=false,ok,3.293,598.5,ok,77.854,674.2,27,27,27,GSI 24x,
+matrix,time+user_id+app_name+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&app_name=ncgrdemo&seen=false,ok,2.004,402.6,ok,57.616,463.4,7,7,7,GSI 29x,
+matrix,time+user_id+channel+status [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&channel=email&status=PENDING,ok,3.182,411.5,ok,18.054,423.8,0,0,0,GSI 6x,
+matrix,time+user_id+channel+status [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&channel=email&status=PENDING,ok,1.139,412.8,ok,15.341,417.4,0,0,0,GSI 13x,
+matrix,time+user_id+channel+type [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&channel=email&type=otp_login,ok,2.886,410.8,ok,34.421,489.6,0,0,0,GSI 12x,
+matrix,time+user_id+channel+type [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&channel=email&type=otp_login,ok,1.478,420.3,ok,27.827,434.2,0,0,0,GSI 19x,
+matrix,time+user_id+channel+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&channel=email&seen=false,ok,4.641,792.8,ok,100.389,907.1,94,94,94,GSI 22x,
+matrix,time+user_id+channel+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&channel=email&seen=false,ok,2.163,403.3,ok,97.831,495.1,8,8,8,GSI 45x,
+matrix,time+user_id+status+type [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&status=PENDING&type=otp_login,ok,3.384,409.7,ok,36.476,440.7,1,1,1,GSI 11x,
+matrix,time+user_id+status+type [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&status=PENDING&type=otp_login,ok,4.832,409.4,ok,22.451,441.6,0,0,0,GSI 5x,
+matrix,time+user_id+status+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&status=PENDING&seen=false,ok,7.151,412.1,ok,45.062,445.7,2,2,2,GSI 6x,
+matrix,time+user_id+status+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&status=PENDING&seen=false,ok,1.698,400.3,ok,21.635,465.6,3,3,3,GSI 13x,
+matrix,time+user_id+type+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&type=otp_login&seen=false,ok,4.664,606.5,ok,59.883,656.5,21,21,21,GSI 13x,
+matrix,time+user_id+type+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&type=otp_login&seen=false,ok,1.43,404.6,ok,22.564,425.9,0,0,0,GSI 16x,
+matrix,time+app_name+channel+status [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&app_name=ncgrdemo&channel=email&status=PENDING,timeout,,5204.7,ok,437.823,1242.1,50024,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+app_name+channel+status [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&app_name=ncgrdemo&channel=email&status=PENDING,ok,372.62,1172.4,ok,644.098,1434.3,120047,100,100,GSI 2x,
+matrix,time+app_name+channel+type [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&app_name=ncgrdemo&channel=email&type=otp_login,timeout,,5205.6,ok,438.987,936.0,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+app_name+channel+type [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&app_name=ncgrdemo&channel=email&type=otp_login,timeout,,5204.1,ok,649.503,1120.4,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+app_name+channel+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&app_name=ncgrdemo&channel=email&seen=false,ok,6.198,801.2,ok,797.967,1585.3,1930489,100,100,GSI 129x,
+matrix,time+app_name+channel+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&app_name=ncgrdemo&channel=email&seen=false,ok,13.221,816.6,ok,1027.136,1845.5,1477066,100,100,GSI 78x,
+matrix,time+app_name+status+type [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&app_name=ncgrdemo&status=PENDING&type=otp_login,timeout,,5203.3,ok,408.341,1207.3,24835,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+app_name+status+type [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&app_name=ncgrdemo&status=PENDING&type=otp_login,ok,58.742,858.0,ok,606.96,1412.0,59956,100,100,GSI 10x,
+matrix,time+app_name+status+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&app_name=ncgrdemo&status=PENDING&seen=false,timeout,,5203.8,ok,511.345,1350.9,147857,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+app_name+status+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&app_name=ncgrdemo&status=PENDING&seen=false,ok,22.838,813.5,ok,746.579,1548.9,355000,100,100,GSI 33x,
+matrix,time+app_name+type+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&app_name=ncgrdemo&type=otp_login&seen=false,ok,10.974,806.8,ok,674.586,1470.3,680646,100,100,GSI 61x,
+matrix,time+app_name+type+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&app_name=ncgrdemo&type=otp_login&seen=false,ok,15.68,805.1,ok,955.118,1817.7,738448,100,100,GSI 61x,
+matrix,time+channel+status+type [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&channel=email&status=PENDING&type=otp_login,timeout,,5202.3,ok,290.485,694.1,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+channel+status+type [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&channel=email&status=PENDING&type=otp_login,timeout,,5202.7,ok,485.338,884.7,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+channel+status+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&channel=email&status=PENDING&seen=false,timeout,,5201.0,ok,558.383,1374.0,298894,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+channel+status+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&channel=email&status=PENDING&seen=false,ok,13.624,808.2,ok,796.245,1597.2,715875,100,100,GSI 58x,
+matrix,time+channel+type+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&channel=email&type=otp_login&seen=false,timeout,,5288.3,ok,396.995,804.8,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+channel+type+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&channel=email&type=otp_login&seen=false,timeout,,5204.8,ok,608.008,1013.5,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+status+type+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&status=PENDING&type=otp_login&seen=false,timeout,,5204.2,ok,509.085,1305.7,149404,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+status+type+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&status=PENDING&type=otp_login&seen=false,ok,11.274,897.6,ok,732.382,1519.5,359089,100,100,GSI 65x,
+matrix,user_id+app_name+channel+status,user_id=usr_055270&app_name=ncgrdemo&channel=email&status=PENDING,ok,15.971,414.5,ok,21.37,439.0,2,2,2,GSI 1x,
+matrix,user_id+app_name+channel+type,user_id=usr_055270&app_name=ncgrdemo&channel=email&type=otp_login,ok,3.803,405.1,ok,16.65,428.1,0,0,0,GSI 4x,
+matrix,user_id+app_name+channel+seen,user_id=usr_055270&app_name=ncgrdemo&channel=email&seen=false,ok,6.481,621.8,ok,76.347,671.0,29,29,29,GSI 12x,
+matrix,user_id+app_name+status+type,user_id=usr_055270&app_name=ncgrdemo&status=PENDING&type=otp_login,ok,5.427,408.1,ok,26.723,428.5,2,2,2,GSI 5x,
+matrix,user_id+app_name+status+seen,user_id=usr_055270&app_name=ncgrdemo&status=PENDING&seen=false,ok,4.056,407.6,ok,33.459,444.8,10,10,10,GSI 8x,
+matrix,user_id+app_name+type+seen,user_id=usr_055270&app_name=ncgrdemo&type=otp_login&seen=false,ok,5.935,409.6,ok,63.188,474.8,9,9,9,GSI 11x,
+matrix,user_id+channel+status+type,user_id=usr_055270&channel=email&status=PENDING&type=otp_login,ok,4.38,406.4,ok,12.173,409.2,0,0,0,GSI 3x,
+matrix,user_id+channel+status+seen,user_id=usr_055270&channel=email&status=PENDING&seen=false,ok,4.577,404.9,ok,72.754,479.6,12,12,12,GSI 16x,
+matrix,user_id+channel+type+seen,user_id=usr_055270&channel=email&type=otp_login&seen=false,ok,4.675,415.6,ok,16.293,415.8,0,0,0,GSI 3x,
+matrix,user_id+status+type+seen,user_id=usr_055270&status=PENDING&type=otp_login&seen=false,ok,6.24,408.3,ok,65.895,472.0,4,4,4,GSI 11x,
+matrix,app_name+channel+status+type,app_name=ncgrdemo&channel=email&status=PENDING&type=otp_login,timeout,,5205.4,ok,6.976,406.5,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,app_name+channel+status+seen,app_name=ncgrdemo&channel=email&status=PENDING&seen=false,timeout,,5201.9,ok,414.274,1208.2,1404907,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,app_name+channel+type+seen,app_name=ncgrdemo&channel=email&type=otp_login&seen=false,timeout,,5205.4,ok,8.567,414.5,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,app_name+status+type+seen,app_name=ncgrdemo&status=PENDING&type=otp_login&seen=false,timeout,,5207.0,ok,344.969,1132.7,701966,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,channel+status+type+seen,channel=email&status=PENDING&type=otp_login&seen=false,timeout,,5204.1,ok,6.853,399.8,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+user_id+app_name+channel+status [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&app_name=ncgrdemo&channel=email&status=PENDING,ok,1.779,396.5,ok,22.236,422.2,0,0,0,GSI 12x,
+matrix,time+user_id+app_name+channel+status [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&app_name=ncgrdemo&channel=email&status=PENDING,ok,1.424,399.7,ok,17.873,414.2,0,0,0,GSI 13x,
+matrix,time+user_id+app_name+channel+type [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&app_name=ncgrdemo&channel=email&type=otp_login,ok,3.82,404.5,ok,31.936,435.2,0,0,0,GSI 8x,
+matrix,time+user_id+app_name+channel+type [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&app_name=ncgrdemo&channel=email&type=otp_login,ok,1.77,401.5,ok,23.557,419.8,0,0,0,GSI 13x,
+matrix,time+user_id+app_name+channel+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&app_name=ncgrdemo&channel=email&seen=false,timeout,,5211.6,ok,89.561,705.9,10,0,10,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+user_id+app_name+channel+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&app_name=ncgrdemo&channel=email&seen=false,ok,1.975,411.5,ok,33.386,432.6,2,2,2,GSI 17x,
+matrix,time+user_id+app_name+status+type [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&app_name=ncgrdemo&status=PENDING&type=otp_login,ok,8.392,408.6,ok,41.307,463.4,1,1,1,GSI 5x,
+matrix,time+user_id+app_name+status+type [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&app_name=ncgrdemo&status=PENDING&type=otp_login,ok,6.275,404.8,ok,15.583,413.7,0,0,0,GSI 2x,
+matrix,time+user_id+app_name+status+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&app_name=ncgrdemo&status=PENDING&seen=false,ok,4.647,406.3,ok,48.528,452.7,1,1,1,GSI 10x,
+matrix,time+user_id+app_name+status+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&app_name=ncgrdemo&status=PENDING&seen=false,ok,1.962,412.0,ok,24.084,425.2,3,3,3,GSI 12x,
+matrix,time+user_id+app_name+type+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&app_name=ncgrdemo&type=otp_login&seen=false,ok,4.199,417.1,ok,59.792,467.1,4,4,4,GSI 14x,
+matrix,time+user_id+app_name+type+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&app_name=ncgrdemo&type=otp_login&seen=false,ok,1.219,407.9,ok,24.037,426.0,0,0,0,GSI 20x,
+matrix,time+user_id+channel+status+type [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&channel=email&status=PENDING&type=otp_login,ok,4.392,409.8,ok,22.752,419.6,0,0,0,GSI 5x,
+matrix,time+user_id+channel+status+type [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&channel=email&status=PENDING&type=otp_login,ok,2.368,397.3,ok,16.477,456.7,0,0,0,GSI 7x,
+matrix,time+user_id+channel+status+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&channel=email&status=PENDING&seen=false,ok,4.049,492.0,ok,19.759,516.4,0,0,0,GSI 5x,
+matrix,time+user_id+channel+status+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&channel=email&status=PENDING&seen=false,ok,1.734,437.4,ok,24.685,430.4,0,0,0,GSI 14x,
+matrix,time+user_id+channel+type+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&channel=email&type=otp_login&seen=false,ok,12.242,453.0,ok,28.18,426.7,0,0,0,GSI 2x,
+matrix,time+user_id+channel+type+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&channel=email&type=otp_login&seen=false,ok,1.297,400.0,ok,24.161,423.6,0,0,0,GSI 19x,
+matrix,time+user_id+status+type+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&status=PENDING&type=otp_login&seen=false,ok,4.397,400.0,ok,48.339,456.0,1,1,1,GSI 11x,
+matrix,time+user_id+status+type+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&status=PENDING&type=otp_login&seen=false,ok,1.686,425.4,ok,15.347,417.8,0,0,0,GSI 9x,
+matrix,time+app_name+channel+status+type [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&app_name=ncgrdemo&channel=email&status=PENDING&type=otp_login,timeout,,5206.5,ok,316.417,746.2,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+app_name+channel+status+type [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&app_name=ncgrdemo&channel=email&status=PENDING&type=otp_login,timeout,,5204.3,ok,509.17,954.1,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+app_name+channel+status+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&app_name=ncgrdemo&channel=email&status=PENDING&seen=false,timeout,,5203.9,ok,532.29,1329.1,50024,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+app_name+channel+status+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&app_name=ncgrdemo&channel=email&status=PENDING&seen=false,ok,23.148,820.7,ok,766.867,1563.6,120047,100,100,GSI 33x,
+matrix,time+app_name+channel+type+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&app_name=ncgrdemo&channel=email&type=otp_login&seen=false,timeout,,5202.9,ok,434.875,832.8,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+app_name+channel+type+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&app_name=ncgrdemo&channel=email&type=otp_login&seen=false,timeout,,5207.1,ok,671.414,1068.6,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+app_name+status+type+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&app_name=ncgrdemo&status=PENDING&type=otp_login&seen=false,timeout,,5203.2,ok,506.175,1526.9,24835,0,100,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+app_name+status+type+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&app_name=ncgrdemo&status=PENDING&type=otp_login&seen=false,ok,51.527,847.4,ok,702.566,1500.5,59956,100,100,GSI 14x,
+matrix,time+channel+status+type+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&channel=email&status=PENDING&type=otp_login&seen=false,timeout,,5206.4,ok,315.866,716.0,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+channel+status+type+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&channel=email&status=PENDING&type=otp_login&seen=false,timeout,,5205.6,ok,486.216,893.7,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,user_id+app_name+channel+status+type,user_id=usr_055270&app_name=ncgrdemo&channel=email&status=PENDING&type=otp_login,ok,4.52,406.1,ok,8.708,419.1,0,0,0,GSI 2x,
+matrix,user_id+app_name+channel+status+seen,user_id=usr_055270&app_name=ncgrdemo&channel=email&status=PENDING&seen=false,ok,4.677,408.5,ok,27.732,430.3,2,2,2,GSI 6x,
+matrix,user_id+app_name+channel+type+seen,user_id=usr_055270&app_name=ncgrdemo&channel=email&type=otp_login&seen=false,ok,3.856,402.2,ok,17.55,432.2,0,0,0,GSI 5x,
+matrix,user_id+app_name+status+type+seen,user_id=usr_055270&app_name=ncgrdemo&status=PENDING&type=otp_login&seen=false,ok,23.232,427.5,ok,36.609,435.8,2,2,2,GSI 2x,
+matrix,user_id+channel+status+type+seen,user_id=usr_055270&channel=email&status=PENDING&type=otp_login&seen=false,ok,3.582,404.7,ok,8.741,404.9,0,0,0,GSI 2x,
+matrix,app_name+channel+status+type+seen,app_name=ncgrdemo&channel=email&status=PENDING&type=otp_login&seen=false,timeout,,5204.3,ok,7.133,409.4,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+user_id+app_name+channel+status+type [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&app_name=ncgrdemo&channel=email&status=PENDING&type=otp_login,ok,4.528,407.6,ok,27.205,425.2,0,0,0,GSI 6x,
+matrix,time+user_id+app_name+channel+status+type [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&app_name=ncgrdemo&channel=email&status=PENDING&type=otp_login,ok,1.582,395.9,ok,16.341,435.5,0,0,0,GSI 10x,
+matrix,time+user_id+app_name+channel+status+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&app_name=ncgrdemo&channel=email&status=PENDING&seen=false,ok,1.041,458.4,ok,22.621,428.5,0,0,0,GSI 22x,
+matrix,time+user_id+app_name+channel+status+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&app_name=ncgrdemo&channel=email&status=PENDING&seen=false,ok,1.576,397.2,ok,16.386,420.0,0,0,0,GSI 10x,
+matrix,time+user_id+app_name+channel+type+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&app_name=ncgrdemo&channel=email&type=otp_login&seen=false,ok,4.666,406.7,ok,34.533,438.6,0,0,0,GSI 7x,
+matrix,time+user_id+app_name+channel+type+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&app_name=ncgrdemo&channel=email&type=otp_login&seen=false,ok,0.833,402.8,ok,39.004,438.4,0,0,0,GSI 47x,
+matrix,time+user_id+app_name+status+type+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&app_name=ncgrdemo&status=PENDING&type=otp_login&seen=false,ok,4.908,405.9,ok,50.654,455.5,1,1,1,GSI 10x,
+matrix,time+user_id+app_name+status+type+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&app_name=ncgrdemo&status=PENDING&type=otp_login&seen=false,ok,1.367,400.7,ok,15.954,419.5,0,0,0,GSI 12x,
+matrix,time+user_id+channel+status+type+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&channel=email&status=PENDING&type=otp_login&seen=false,ok,4.405,401.5,ok,22.397,430.7,0,0,0,GSI 5x,
+matrix,time+user_id+channel+status+type+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&channel=email&status=PENDING&type=otp_login&seen=false,ok,1.38,405.6,ok,16.268,424.0,0,0,0,GSI 12x,
+matrix,time+app_name+channel+status+type+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&app_name=ncgrdemo&channel=email&status=PENDING&type=otp_login&seen=false,timeout,,5204.6,ok,311.858,712.3,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,time+app_name+channel+status+type+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&app_name=ncgrdemo&channel=email&status=PENDING&type=otp_login&seen=false,timeout,,5201.6,ok,509.002,912.3,0,0,0,FTS,GSI slow: matching rows sit deep in sort_key order (post-filter walk)
+matrix,user_id+app_name+channel+status+type+seen,user_id=usr_055270&app_name=ncgrdemo&channel=email&status=PENDING&type=otp_login&seen=false,ok,5.078,410.3,ok,9.004,412.2,0,0,0,GSI 2x,
+matrix,time+user_id+app_name+channel+status+type+seen [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&user_id=usr_055270&app_name=ncgrdemo&channel=email&status=PENDING&type=otp_login&seen=false,ok,4.126,403.7,ok,26.265,445.0,0,0,0,GSI 6x,
+matrix,time+user_id+app_name+channel+status+type+seen [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&user_id=usr_055270&app_name=ncgrdemo&channel=email&status=PENDING&type=otp_login&seen=false,ok,1.841,405.4,ok,16.586,468.9,0,0,0,GSI 9x,
+text,text,text=password,n/a,,0.0,ok,226.505,1017.0,962995,0,100,FTS only,no GSI text path
+text,text+status,text=password&status=DELIVERED,n/a,,0.0,ok,136.938,937.6,925653,0,100,FTS only,no GSI text path
+text,text+channel,text=password&channel=email,n/a,,0.0,ok,110.899,910.6,487114,0,100,FTS only,no GSI text path
+text,text+time [last30d],from=2026-08-12T13%3A51%3A51Z&to=2026-09-11T13%3A51%3A51Z&text=password,n/a,,0.0,ok,1027.361,1841.0,9792278,0,100,FTS only,no GSI text path
+text,text+time [oct2025],from=2025-10-01T00%3A00%3A00Z&to=2025-10-31T23%3A59%3A59Z&text=password,n/a,,0.0,ok,1407.592,2213.4,12722181,0,100,FTS only,no GSI text path

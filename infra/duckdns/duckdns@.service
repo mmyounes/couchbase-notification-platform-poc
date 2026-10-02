@@ -1,0 +1,12 @@
+[Unit]
+Description=Update DuckDNS record for %i.duckdns.org
+Documentation=https://www.duckdns.org/spec.jsp
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/duckdns-update.sh %i
+# A DuckDNS blip must not leave the record stale until the next tick.
+Restart=on-failure
+RestartSec=30s

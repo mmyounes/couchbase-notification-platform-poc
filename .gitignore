@@ -1,0 +1,33 @@
+# Private keys - never commit. The demo expects you to supply your own and
+# name it in infra/demo.env.
+*.pem
+*.key
+
+# Local environment: names your SSH key, may hold a DuckDNS token.
+infra/demo.env
+infra/.env
+
+# Customer material, not ours to publish.
+*.pdf
+
+# Working notes: the pre-scrub original of the spec. docs/design-spec.md is the
+# published copy.
+docs/superpowers/
+
+# Machine-local Claude Code permissions; contains this operator's host addresses.
+.claude/settings.local.json
+
+node_modules/
+dist/
+*.tsbuildinfo
+.next/
+__pycache__/
+.DS_Store
+
+# Go build output
+apps/pipeline-go/pipeline
+apps/seeder-go/ncgr-seed
+
+# Xcode
+ncgrdemo/**/xcuserdata/
+ncgrdemo/**/*.xcuserstate

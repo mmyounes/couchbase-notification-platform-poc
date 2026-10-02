@@ -1,0 +1,24 @@
+{
+  "name": "ncgr-notification-poc",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm -r --filter './packages/*' build && pnpm -r --filter './apps/*' build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "dev:web": "pnpm --filter @ncgr/web dev",
+    "dev:channels": "pnpm --filter @ncgr/mock-channels dev",
+    "build:pipeline": "cd apps/pipeline-go && go build -o pipeline .",
+    "build:seeder": "cd apps/seeder-go && go build -o ncgr-seed ."
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "@types/node": "^22.7.5",
+    "tsx": "^4.19.1",
+    "vitest": "^2.1.3"
+  }
+}
