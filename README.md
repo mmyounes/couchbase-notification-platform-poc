@@ -5,7 +5,7 @@ renders templated notifications, fans them out across channels, tracks delivery
 with retry and backoff, and searches the result — against a live dataset of
 **500 million notification instances**.
 
-Generalised from a real engagement so any Couchbase SE can stand up their own.
+Generalised from a real engagement so anyone can stand up their own.
 Everything here was measured on a live cluster, not estimated.
 
 | | Measured |
@@ -447,7 +447,7 @@ engagement, read it before changing the data model.
 
 ---
 
-## Notes for SEs
+## Notes
 
 **Seed deterministically.** The same `--seed` produces the same documents, so a
 demo can be rebuilt exactly.
